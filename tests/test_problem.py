@@ -18,7 +18,30 @@ def test_problem_rendering():
 % -------------------
 %  Unknown  
 % -------------------
-\beginner{3}\hspace{1.5mm}\textbf{{\large Unknown}} V2
+\beginner{3}\hspace{1.5mm}\textbf{{\large Unknown}}
+V2
+$ \color{red}
+    \bigstar
+    \bigstar
+    \bigstar
+    \bigstar
+$
+\hfill $\square$
+\vspace{1.5mm}
+\newline
+Test problem
+\newline\newline"""
+    
+    #Instantiate project
+    problem = Problem('Unknown', grade=None, stars=4,
+                      comment='Test problem', number=3)
+    #Render tex
+    tex = problem.render()
+    assert tex == r"""
+% -------------------
+%  Unknown  
+% -------------------
+\project{3}\hspace{1.5mm}\textbf{{\large Unknown}}
 $ \color{red}
     \bigstar
     \bigstar
