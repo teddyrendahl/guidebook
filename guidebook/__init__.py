@@ -1,4 +1,4 @@
-from .problem import Problem
+from .problem import Boulder, Problem
 
 from ._version import get_versions
 __version__ = get_versions()['version']

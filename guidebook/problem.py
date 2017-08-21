@@ -14,7 +14,7 @@ from latex.jinja2 import make_env
 ##############
 #   Module   #
 ##############
-from .templates import problem
+from .templates import problem, boulder
 
 logger = logging.getLogger(__name__)
 
@@ -64,6 +64,7 @@ class Problem:
         self.comment = comment
         self.number  = number
 
+
     @property
     def color(self):
         """
@@ -75,7 +76,8 @@ class Problem:
                 return color
 
         #Label non-graded climbs as projects
-        logger.warning('Grade out of range, assuming {} is a project'.format(self.name))
+        logger.warning('Grade out of range, assuming {} is a '
+                       'project'.format(self.name))
         return 'project'
 
 
@@ -83,10 +85,49 @@ class Problem:
         """
         Render the boulder problem in LaTex
         """
+        #Create LaTex Jinja2 Environment
         env  = make_env()
         tmpl = env.from_string(self.template)
         #Grab all stored route information
         info = vars(self)
         #Add difficulty grouping
         info.update({'color' : self.color})
+        return tmpl.render(info)
+
+
+
+class Boulder(object):
+    """
+    Class to represent a boulder with multiple problems
+    
+    Parameters
+    ----------
+    name : str
+        Name of boulder
+
+    comment : str, optional
+        Directions or information about the boulder
+
+    problems : iterable, optional
+        Contained problems
+    """
+    template = boulder
+
+    def __init__(self, name, comment=None, problems=None):
+        self.name     = name
+        self.comment  = comment
+        self.problems = problems
+
+
+    def render(self):
+        """
+        Render the boulder description and all problems into LaTex
+        """
+        #Create LaTex Jinja2 Environment
+        env  = make_env()
+        tmpl = env.from_string(self.template)
+        #Grab all stored boulder information
+        info = vars(self)
+        #Render all contained problems
+        info.update({'problems' : [prob.render() for prob in self.problems]})
         return tmpl.render(info)
