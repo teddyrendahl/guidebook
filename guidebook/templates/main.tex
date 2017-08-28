@@ -1,0 +1,86 @@
+% ----------------------------------------------------------------------------------------
+% PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+% ----------------------------------------------------------------------------------------
+
+\documentclass{book} % Font sizes: 10, 11, or 12; paper sizes: a4paper, letterpaper, a5paper, legalpaper, executivepaper or landscape; font families: sans or roman
+\usepackage[scale=0.85]{geometry} % Reduce document margins
+\usepackage{titlesec}
+\usepackage{blindtext}
+\usepackage{xcolor, lipsum}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{relsize}
+\usepackage{color}
+\usepackage{subfiles}
+
+% ----------------------------------------------------------------------------------------
+%   HEADER SETTINGS
+% ----------------------------------------------------------------------------------------
+\title{Yosemite National Park Bouldering}
+\author{Keenan Takahashi and Teddy Rendahl}
+\date{ }
+
+% ----------------------------------------------------------------------------------------
+%   HEADER SETTINGS
+% ----------------------------------------------------------------------------------------
+\newpagestyle{mystyle}{%
+  \headrule\sethead{\chaptername\ \thechapter. \chaptertitle}{}{}
+  \setfoot{}{\thepage}{}}
+\pagestyle{mystyle}
+
+% ---------------------------------''-------------------------------------------------------
+%   CREATE CHAPTER TITLES
+% ----------------------------------------------------------------------------------------
+
+\titleformat{\chapter}[display]
+{\huge\bfseries}
+{\thesection.}{0.5em}{}
+\titlespacing*{\chapter}{0pt}{\baselineskip}{0.5em}
+
+% ----------------------------------------------------------------------------------------
+%   CREATE BOULDER TITLES
+% ----------------------------------------------------------------------------------------
+
+\titleformat{name=\section}[block]
+  {\sffamily\large}
+  {}
+  {0pt}
+  {\boxline}
+\titlespacing*{\section}{0pt}{\baselineskip}{-\parskip}
+
+\newcommand{\boxline}[1]{%
+   \colorbox{black}{\parbox{\dimexpr\columnwidth-2\fboxsep-2\fboxrule\relax}{\color{white}\textbf{#1}}}
+}
+
+% ----------------------------------------------------------------------------------------
+%   CREATE CIRCLE RULES
+% ----------------------------------------------------------------------------------------
+
+\newcommand*\beginner[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle, draw=green, inner sep=0pt, minimum size=5mm, fill=green] (char) {\color{white}\textbf{#1}};}}
+
+\newcommand*\moderate[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle, draw=blue, inner sep=0pt, minimum size=5mm, fill=blue] (char) {\color{white}\textbf{#1}};}}
+
+\newcommand*\hard[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle, draw=orange, inner sep=0pt, minimum size=5mm, fill=orange] (char) {\color{white}\textbf{#1}};}}
+
+\newcommand*\difficult[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle, draw=red, inner sep=0pt, minimum size=5mm, fill=red] (char) {\color{white}\textbf{#1}};}}
+
+\newcommand*\project[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle, draw=red, inner sep=0pt, minimum size=5mm, fill=red] (char) {\color{white}\textbf{#1}};}}
+
+\begin{document}
+% ----------------------------------------------------------------------------------------
+%   INCLUDE EACH AREA SECTION
+% ----------------------------------------------------------------------------------------
+
+%- for area in areas
+\subfile{\VAR{area}}
+%- endfor
+
+\end{document}
+
+

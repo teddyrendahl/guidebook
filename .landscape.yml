@@ -5,3 +5,8 @@ max-line-length: 80
 autodetect: true
 python-targets:
   - 3
+ignore-paths:
+  - tests
+  - guidebook/_version.py
+  - guidebook/__init__.py
+  - versioneer.py

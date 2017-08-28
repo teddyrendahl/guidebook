@@ -7,4 +7,5 @@ setup(name='guidebook',
       license='GNU',
       author='Teddy Rendahl',
       packages=find_packages(),
+      include_package_data=True,
       )
