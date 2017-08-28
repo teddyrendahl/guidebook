@@ -1,5 +1,6 @@
+from .area    import Area
 from .problem import Boulder, Problem
-
+from .book    import Book
 from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
