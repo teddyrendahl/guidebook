@@ -4,6 +4,7 @@ Generation of individual boulder problem descriptions
 ##############
 #  Standard  #
 ##############
+import copy
 import logging
 
 ##############
@@ -76,8 +77,8 @@ class Problem:
                 return color
 
         #Label non-graded climbs as projects
-        logger.warning('Grade out of range, assuming {} is a '
-                       'project'.format(self.name))
+        logger.warning('Grade out of range, assuming %s is a '
+                       'project', self.name)
         return 'project'
 
 
@@ -89,7 +90,7 @@ class Problem:
         env  = make_env()
         tmpl = env.from_string(self.template)
         #Grab all stored route information
-        info = vars(self)
+        info = copy.deepcopy(vars(self))
         #Add difficulty grouping
         info.update({'color' : self.color})
         return tmpl.render(info)
@@ -127,7 +128,7 @@ class Boulder(object):
         env  = make_env()
         tmpl = env.from_string(self.template)
         #Grab all stored boulder information
-        info = vars(self)
+        info = copy.deepcopy(vars(self))
         #Render all contained problems
         info.update({'problems' : [prob.render() for prob in self.problems]})
         return tmpl.render(info)
