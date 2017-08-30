@@ -13,33 +13,33 @@ def test_problem_rendering():
     problem = Problem('Unknown', grade=2, stars=4,
                       comment='Test problem', number=3)
     #Render tex
-    tex = problem.render()
+    tex = problem.render(3)
     assert tex == fake_problem
     
     #Instantiate project
     problem = Problem('Unknown', grade=None, stars=4,
                       comment='Test problem', number=3)
     #Render tex
-    tex = problem.render()
+    tex = problem.render(3)
     assert tex == fake_project
 
 def test_boulder_rendering():
     #Instantiate problems
     problems = [Problem('Unknown', grade=2, stars=4,
-                        comment='Test problem', number=3),
+                        comment='Test problem'),
                 Problem('Unknown', grade=2, stars=4,
-                        comment='Test problem', number=3),
+                        comment='Test problem'),
                 Problem('Unknown', grade=2, stars=4,
-                        comment='Test problem', number=3)]
+                        comment='Test problem')]
     #Instantiate boulders
     boulder = Boulder('Unknown', comment='Test boulder', problems=problems)
     #Render tex
     tex = boulder.render()
-    print(tex)
     #Check the boulder description
     assert tex.startswith(fake_boulder)
     #Check each problem is included
-    assert all([problem.render() in tex for problem in problems])
+    assert all([problem.render(i+1) in tex
+                for i,problem in enumerate(problems)])
     
 fake_boulder = r"""
 % ---------------------------------------------------

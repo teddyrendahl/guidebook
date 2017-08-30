@@ -38,9 +38,7 @@ class Problem:
     #Link template
     template = problem
 
-    def __init__(self, name, grade=None,
-                 stars=None, comment=None,
-                 number=None):
+    def __init__(self, name, grade=None, stars=None, comment=None, **kwargs):
         """
         Parameters
         ----------
@@ -56,14 +54,12 @@ class Problem:
         comment : str
             Short description of boulder
 
-        number : int
-            Problem number on boulder
         """
         self.name    = name
         self.grade   = grade
         self.stars   = stars
         self.comment = comment
-        self.number  = number
+        self.number  = None
 
 
     @property
@@ -82,19 +78,34 @@ class Problem:
         return 'project'
 
 
-    def render(self):
+    def render(self, num=0):
         """
         Render the boulder problem in LaTex
+        
+        Parameters
+        ----------
+        num : int
+            Number of problem
+
+        Returns
+        -------
+        template : str
+            Templated string
         """
         #Create LaTex Jinja2 Environment
         env  = make_env()
         tmpl = env.from_string(self.template)
         #Grab all stored route information
         info = copy.deepcopy(vars(self))
+        #Add problem number
+        info['number'] = num
         #Add difficulty grouping
         info.update({'color' : self.color})
         return tmpl.render(info)
 
+
+    def __repr__(self):
+        return "<({} V{})>".format(self.name, self.grade)
 
 
 class Boulder(object):
@@ -123,6 +134,16 @@ class Boulder(object):
     def render(self):
         """
         Render the boulder description and all problems into LaTex
+        
+        Parameters
+        ----------
+        num : int
+            Number of problem
+
+        Returns
+        -------
+        template : str
+            Templated string
         """
         #Create LaTex Jinja2 Environment
         env  = make_env()
@@ -130,5 +151,10 @@ class Boulder(object):
         #Grab all stored boulder information
         info = copy.deepcopy(vars(self))
         #Render all contained problems
-        info.update({'problems' : [prob.render() for prob in self.problems]})
+        info.update({'problems' : [prob.render(i+1)
+                                   for i, prob in enumerate(self.problems)]})
         return tmpl.render(info)
+    
+    
+    def __repr__(self):
+        return "<({}, {} problems)>".format(self.name, len(self.problems))
