@@ -54,7 +54,21 @@ def test_book_rendering(book):
     #Check each area is included
     assert all([name_chapter(area.name) in tex for area in book.areas])
 
+def test_book_latex_creation(book):
+    #Create all subfiles
+    with tempfile.TemporaryDirectory() as tmp:
+        book.create_tex('main.tex', build_dir=tmp, include_subfiles=True)
+        assert all([os.path.exists(os.path.join(tmp,name_chapter(area.name)))
+                    for area in book.areas])
+        assert os.path.exists(os.path.join(tmp, 'main.tex'))
 
+    #Create no subfiles
+    with tempfile.TemporaryDirectory() as tmp:
+        book.create_tex('main.tex', build_dir=tmp, include_subfiles=False)
+        assert all([not os.path.exists(os.path.join(tmp,name_chapter(area.name)))
+                    for area in book.areas])
+        assert os.path.exists(os.path.join(tmp, 'main.tex'))
+    
 @requires_latex
 def test_book_pdf_creation(book):
     with tempfile.TemporaryDirectory() as tmp:
