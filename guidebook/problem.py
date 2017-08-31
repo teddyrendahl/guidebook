@@ -38,7 +38,8 @@ class Problem:
     #Link template
     template = problem
 
-    def __init__(self, name, grade=None, stars=None, comment=None, **kwargs):
+    def __init__(self, name, grade=None, stars=None, comment=None,
+                 boulder=None, **kwargs):
         """
         Parameters
         ----------
@@ -54,13 +55,14 @@ class Problem:
         comment : str
             Short description of boulder
 
+        boulder : str, optional
+            Name of boulder
         """
         self.name    = name
         self.grade   = grade
         self.stars   = stars
         self.comment = comment
-        self.number  = None
-
+        self.boulder = boulder
 
     @property
     def color(self):
@@ -128,7 +130,7 @@ class Boulder(object):
     def __init__(self, name, comment=None, problems=None):
         self.name     = name
         self.comment  = comment
-        self.problems = problems
+        self.problems = problems or []
 
 
     def render(self):
