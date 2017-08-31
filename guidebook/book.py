@@ -65,6 +65,9 @@ class Book(object):
         environement
         """
         main_tex = main_tex or 'main.tex'
+        if build_dir:
+            main_tex = os.path.join(build_dir, main_tex)
+        
         logger.debug("Creating LaTeX file %s ...", main_tex)
         with open(main_tex, 'w+') as f:
             f.write(self.render())
@@ -100,13 +103,14 @@ class Book(object):
         include_subfiles : bool or Iterable
             Rebuild all, None or some of the chapter subfiles.
         """
+        build_dir = build_dir or './'
+        #Create LateX name
+        fname     = fname or 'main.pdf'
+        tex_name  = os.path.splitext(fname)[0] + '.tex'
+        fname     = os.path.join(build_dir, fname)
         #Append build directory
         logger.info("Creating PDF file at %s ...", fname)
-        build_dir = build_dir or './'
-        fname     = fname or 'main.pdf'
-        fname = os.path.join(build_dir, fname)
         #Create LaTeX
-        tex_name = os.path.splitext(fname)[0] + '.tex'
         self.create_tex(tex_name, build_dir=build_dir,
                         include_subfiles=include_subfiles)
         #Create the PDF
