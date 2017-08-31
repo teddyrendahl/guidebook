@@ -18,11 +18,11 @@ from guidebook import Problem, Boulder, Area
 def area():
     #Instantiate problems
     problems = [Problem('Unknown', grade=2, stars=4,
-                        comment='Test problem', number=3),
+                        comment='Test problem'),
                 Problem('Unknown', grade=2, stars=4,
-                        comment='Test problem', number=3),
+                        comment='Test problem'),
                 Problem('Unknown', grade=2, stars=4,
-                        comment='Test problem', number=3)]
+                        comment='Test problem')]
     #Instantiate boulders
     boulders = [Boulder('Boulder 1', comment="Test boulder", problems=problems),
                 Boulder('Boulder 2', comment="Test boulder", problems=problems),

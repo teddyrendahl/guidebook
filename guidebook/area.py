@@ -109,6 +109,6 @@ class Area(object):
             fname = os.path.join(build_dir, fname)
 
         #Render information into subfile
-        logger.info("Creating subfile for %s in %s...", self.name, fname)
+        logger.debug("Creating subfile for %s in %s...", self.name, fname)
         with open(fname, 'w+') as f:
             f.write(self.render(main_tex=main_tex))
