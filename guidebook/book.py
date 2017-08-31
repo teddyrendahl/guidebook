@@ -11,9 +11,8 @@ from collections import Iterable
 ##############
 #  External  #
 ##############
-from latex import LatexBuildError, build_pdf
+from latex import build_pdf
 from latex.jinja2 import make_env
-from latex.errors import parse_log
 from jinja2.loaders import PackageLoader
 
 ##############
