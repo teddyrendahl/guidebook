@@ -29,7 +29,6 @@ class Book(object):
     def __init__(self, areas=None):
         self.areas= areas
 
-
     def render(self):
         """
         Create main LaTex file for guidebook
@@ -40,8 +39,6 @@ class Book(object):
         #Grab all area information
         info = {'areas' : [name_chapter(area.name) for area in self.areas]}
         return tmpl.render(info)  
-
-
 
     def create_tex(self, main_tex=None, build_dir=None, include_subfiles=True):
         """
@@ -64,7 +61,8 @@ class Book(object):
         environement
         """
         main_tex = main_tex or 'main.tex'
-        if build_dir:
+        #Append build directory to LaTex file
+        if build_dir and not main_tex.startswith(build_dir):
             main_tex = os.path.join(build_dir, main_tex)
         
         logger.debug("Creating LaTeX file %s ...", main_tex)
@@ -103,10 +101,10 @@ class Book(object):
             Rebuild all, None or some of the chapter subfiles.
         """
         build_dir = build_dir or './'
-        #Create LateX name
+        #Create LateX and PDF file names
         fname     = fname or 'main.pdf'
-        tex_name  = os.path.splitext(fname)[0] + '.tex'
         fname     = os.path.join(build_dir, fname)
+        tex_name  = os.path.splitext(fname)[0] + '.tex'
         #Append build directory
         logger.info("Creating PDF file at %s ...", fname)
         #Create LaTeX
