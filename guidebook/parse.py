@@ -15,7 +15,6 @@ import pandas
 ##############
 #   Module   #
 ##############
-from .area    import Area
 from .problem import Problem, Boulder
 from .errors  import TableNotFoundError
 
@@ -81,35 +80,6 @@ class ExcelTemplate:
                                          footer=footer))
         return dict(zip(self.table_names, tables))
 
-    def instantiate_area(self):
-        """
-        Instantiate an area from the spreadsheet
-        """
-        #Load information into pandas
-        tables = self.find_tables()
-        #Create problems
-        problems = tables['Problems'].instantiate_objects(Problem)
-        #Create boulders
-        boulders = tables['Boulders'].instantiate_objects(Boulder)
-        #Assign problems to boulders
-        boulder_lookup = dict((bldr.name, bldr) for bldr in boulders)
-        for problem in problems: 
-            try:
-                #Add problem to boulder by looking at boulder name
-                boulder_lookup[problem.boulder].problems.append(problem)
-            except KeyError as e:
-                logger.error("Problem %s is on the %s boulder, but that "
-                             "boulder does not exist",
-                             problem.name, problem.boulder)
-        #Create final area
-        area = tables['Area Information'].instantiate_objects(Area)[0]
-        #Assign boulders
-        area.boulders = boulders
-        logger.info("Successfully loaded area %s from Excel Workbook "
-                    "%s, finding %s boulders with %s problems",
-                    area.name, self.path, len(area.boulders),
-                    len(area.problems))
-        return area
 
 
 class TemplatedTable:
