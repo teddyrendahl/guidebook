@@ -53,7 +53,7 @@ fake_problem=r"""
 % -------------------
 %  Unknown  
 % -------------------
-\beginner{3}\hspace{1.5mm}\textbf{{\large Unknown}}
+\circlednumber{3}{ForestGreen}\hspace{1.5mm}\textbf{{\large Unknown}}
 V2
 $ \color{red}
     \bigstar
@@ -72,7 +72,7 @@ fake_project=r"""
 % -------------------
 %  Unknown  
 % -------------------
-\project{3}\hspace{1.5mm}\textbf{{\large Unknown}}
+\circlednumber{3}{black}\hspace{1.5mm}\textbf{{\large Unknown}}
 $ \color{red}
     \bigstar
     \bigstar

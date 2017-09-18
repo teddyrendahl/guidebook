@@ -1,6 +1,7 @@
 ##############
 #  Standard  #
 ##############
+import os.path
 import logging
 
 ##############
@@ -11,6 +12,9 @@ import pytest
 ##############
 #   Module   #
 ##############
+
+# Example Template Excel file
+excel_template = os.path.join(os.path.dirname(__file__),'example.xlsx')
 
 #Enable the logging level to be set from the command line
 def pytest_addoption(parser):
