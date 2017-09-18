@@ -6,9 +6,11 @@
 \usepackage[scale=0.85]{geometry} % Reduce document margins
 \usepackage{titlesec}
 \usepackage{blindtext}
-\usepackage{xcolor, lipsum}
+\usepackage[dvipsnames, table]{xcolor}
 \usepackage{multicol}
 \usepackage{tikz}
+\usepackage{array}
+\usepackage{environ}
 \usepackage{amssymb}
 \usepackage{relsize}
 \usepackage{color}
@@ -29,15 +31,34 @@
   \setfoot{}{\thepage}{}}
 \pagestyle{mystyle}
 
-% ---------------------------------''-------------------------------------------------------
-%   CREATE CHAPTER TITLES
 % ----------------------------------------------------------------------------------------
-
+%   CHAPTER SETTINGS
+% ----------------------------------------------------------------------------------------
 \titleformat{\chapter}[display]
 {\huge\bfseries}
 {\thesection.}{0.5em}{}
 \titlespacing*{\chapter}{0pt}{\baselineskip}{0.5em}
 
+% ---------------------------------''-------------------------------------------------------
+%   ROUNDED TABLE
+% ----------------------------------------------------------------------------------------
+\newsavebox{\tablebox}
+
+\NewEnviron{rndtable}[2]{%
+  \addtolength{\extrarowheight}{1ex}%
+  \rowcolors{2}{#2!20}{#2!40}%
+  \savebox{\tablebox}{%
+    \begin{tabular}{#1}%
+      \BODY%
+    \end{tabular}}%
+  \begin{tikzpicture}
+    \begin{scope}
+      \clip[rounded corners=1ex] (0,-\dp\tablebox) -- (\wd\tablebox,-\dp\tablebox) -- (\wd\tablebox,\ht\tablebox) -- (0,\ht\tablebox) -- cycle;
+      \node at (0,-\dp\tablebox) [anchor=south west,inner sep=0pt]{\usebox{\tablebox}};
+    \end{scope}
+    \draw[rounded corners=1ex] (0,-\dp\tablebox) -- (\wd\tablebox,-\dp\tablebox) -- (\wd\tablebox,\ht\tablebox) -- (0,\ht\tablebox) -- cycle;
+  \end{tikzpicture}
+}
 % ----------------------------------------------------------------------------------------
 %   CREATE BOULDER TITLES
 % ----------------------------------------------------------------------------------------
@@ -57,20 +78,8 @@
 %   CREATE CIRCLE RULES
 % ----------------------------------------------------------------------------------------
 
-\newcommand*\beginner[1]{\tikz[baseline=(char.base)]{
-            \node[shape=circle, draw=green, inner sep=0pt, minimum size=5mm, fill=green] (char) {\color{white}\textbf{#1}};}}
-
-\newcommand*\moderate[1]{\tikz[baseline=(char.base)]{
-            \node[shape=circle, draw=blue, inner sep=0pt, minimum size=5mm, fill=blue] (char) {\color{white}\textbf{#1}};}}
-
-\newcommand*\hard[1]{\tikz[baseline=(char.base)]{
-            \node[shape=circle, draw=orange, inner sep=0pt, minimum size=5mm, fill=orange] (char) {\color{white}\textbf{#1}};}}
-
-\newcommand*\difficult[1]{\tikz[baseline=(char.base)]{
-            \node[shape=circle, draw=red, inner sep=0pt, minimum size=5mm, fill=red] (char) {\color{white}\textbf{#1}};}}
-
-\newcommand*\project[1]{\tikz[baseline=(char.base)]{
-            \node[shape=circle, draw=red, inner sep=0pt, minimum size=5mm, fill=red] (char) {\color{white}\textbf{#1}};}}
+\newcommand*\circlednumber[2]{\tikz[baseline=(char.base)]{
+            \node[shape=circle, draw=#2, inner sep=0pt, minimum size=5mm, fill=#2] (char) {\color{white}\textbf{#1}};}}
 
 \begin{document}
 % ----------------------------------------------------------------------------------------
