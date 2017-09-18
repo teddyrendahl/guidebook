@@ -19,6 +19,30 @@ from .templates import problem, boulder
 
 logger = logging.getLogger(__name__)
 
+def color_for_grade(grade):
+    """
+    Find the appropriate color for the grade
+    
+    Parameters
+    ----------
+    grade : int, None
+        V-grade of the problem. If a proper color can not be found, `black` is
+        returned
+
+    Returns
+    -------
+    color : str
+        Name of color
+    """
+    #Find templates
+    for color, rng in Problem.grade_colors.items():
+        if grade in rng:
+            return color
+
+    #Label non-graded climbs as projects
+    logger.warning('Grade out of range, assuming the problem is a project')
+    return 'black'
+
 class Problem:
     """
     Class to represent an individual problem
@@ -29,10 +53,10 @@ class Problem:
         Dictionary of color names to grade range mapping
     """
     #Group problems by grade
-    grade_colors = {'beginner'   : range(0,3),
-                    'moderate'   : range(3,6),
-                    'hard'       : range(6,9),
-                    'difficult'  : range(9,16),
+    grade_colors = {'ForestGreen' : range(0,3),
+                    'blue'        : range(3,6),
+                    'orange'      : range(6,9),
+                    'red'         : range(9,16),
                     }
 
     #Link template
@@ -69,16 +93,7 @@ class Problem:
         """
         Proper color based on grade
         """
-        #Find templates
-        for color, rng in self.grade_colors.items():
-            if self.grade in rng:
-                return color
-
-        #Label non-graded climbs as projects
-        logger.warning('Grade out of range, assuming %s is a '
-                       'project', self.name)
-        return 'project'
-
+        return color_for_grade(self.grade)
 
     def render(self, num=0):
         """
@@ -104,7 +119,6 @@ class Problem:
         #Add difficulty grouping
         info.update({'color' : self.color})
         return tmpl.render(info)
-
 
     def __repr__(self):
         return "<({} V{})>".format(self.name, self.grade)
@@ -132,7 +146,6 @@ class Boulder(object):
         self.comment  = comment
         self.problems = problems or []
 
-
     def render(self):
         """
         Render the boulder description and all problems into LaTex
@@ -156,7 +169,6 @@ class Boulder(object):
         info.update({'problems' : [prob.render(i+1)
                                    for i, prob in enumerate(self.problems)]})
         return tmpl.render(info)
-    
     
     def __repr__(self):
         return "<({}, {} problems)>".format(self.name, len(self.problems))
